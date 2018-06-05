@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  graphql_api:
+    build: .
+    container_name: graphql
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    links:
+      - graphql_db
+    depends_on:
+      - graphql_db
+    volumes:
+      - ".:/graphql"
+
+  graphql_db:
+    image: postgres:9.4
+    container_name: graphql_database
+    environment:
+      POSTGRES_USER: mmroot
+      POSTGRES_PASSWORD: mmroot
+    ports: ["5432:5432"]
+    expose: ["5432"]
+
+  # web:
+  #   build:
+  #     context: ./web
+  #   container_name: graphql_web
+  #   ports:
+  #     - "8081:3000"
+  #   expose:
+  #     - "8081"
+  #   links:
+  #     - api
+  #   depends_on:
+  #     - api
+  #   volumes:
+  #     - ./web:/data/app
+  #   environment:
+  #     - NODE_ENV=development
